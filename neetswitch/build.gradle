@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+}
+
+
+def libname = 'NeetSwitch.aar'
+task clearAar(type: Delete) {
+    delete '../library/'
+}
+
+task makeAar(type: Copy) {
+    from('build/outputs/aar/')
+    into('../library/')
+    include('neetswitch-release.aar')
+    rename ('neetswitch-release.aar',libname)
+}
+
+makeAar.dependsOn(clearAar, build)

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/NeetSwitch.iml" filepath="$PROJECT_DIR$/NeetSwitch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/neetswitch/neetswitch.iml" filepath="$PROJECT_DIR$/neetswitch/neetswitch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/neetswitchsample/neetswitchsample.iml" filepath="$PROJECT_DIR$/neetswitchsample/neetswitchsample.iml" />
+    </modules>
+  </component>
+</project>
