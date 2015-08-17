@@ -34,3 +34,4 @@ task makeAar(type: Copy) {
 }
 
 makeAar.dependsOn(clearAar, build)
+apply from: rootProject.file('neetswitch/bintray.gradle')
