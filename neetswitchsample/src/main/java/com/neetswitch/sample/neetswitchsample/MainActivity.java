@@ -17,31 +17,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NeetSwitch neetSwitch = (NeetSwitch) findViewById(R.id.neetSwitch);
-        neetSwitch.setOnCheckedChangeListener(this);
-        neetSwitch.setOnClickListener(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        NeetSwitch neetSwitch1 = (NeetSwitch) findViewById(R.id.neetSwitch1);
+        NeetSwitch neetSwitch2 = (NeetSwitch) findViewById(R.id.neetSwitch2);
+        NeetSwitch neetSwitch3 = (NeetSwitch) findViewById(R.id.neetSwitch3);
+        NeetSwitch neetSwitch4 = (NeetSwitch) findViewById(R.id.neetSwitch4);
+        neetSwitch1.setOnCheckedChangeListener(this);
+        neetSwitch2.setOnCheckedChangeListener(this);
+        neetSwitch3.setOnCheckedChangeListener(this);
+        neetSwitch4.setOnCheckedChangeListener(this);
     }
 
     @Override

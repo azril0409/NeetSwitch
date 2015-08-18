@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="NeetSwitch">
-        <attr name="offColor" format="reference|color" />
-        <attr name="onColor" format="reference|color" />
-        <attr name="buttonColor" format="reference|color" />
-        <attr name="shape">
+        <attr name="neet_switch_offColor" format="reference|color" />
+        <attr name="neet_switch_onColor" format="reference|color" />
+        <attr name="neet_switch_buttonColor" format="reference|color" />
+        <attr name="neet_switch_shape">
             <enum name="rect" value="1" />
             <enum name="circle" value="2" />
         </attr>
-        <attr name="touchable" format="boolean"/>
-        <attr name="isOpen" format="boolean" />
-        <attr name="mediaDesign" format="boolean" />"
+        <attr name="neet_switch_touchable" format="boolean"/>
+        <attr name="neet_switch_isOpen" format="boolean" />
+        <attr name="neet_switch_mediaDesign" format="boolean" />"
+        <attr name="neet_switch_elevation" format="dimension|reference"/>
     </declare-styleable>
 </resources>

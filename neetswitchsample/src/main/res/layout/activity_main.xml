@@ -1,8 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -10,13 +11,55 @@
     tools:context=".MainActivity">
 
     <com.neetoffice.library.widget.neetswitch.NeetSwitch
-        android:id="@+id/neetSwitch"
+        android:id="@+id/neetSwitch1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:isOpen="true"
-        app:onColor="#F00"
-        app:offColor="#00F"
-        app:buttonColor="#FF0"
-        app:mediaDesign="true" />
+        android:layout_weight="1"
+        app:neet_switch_buttonColor="#FF0"
+        app:neet_switch_elevation="2dip"
+        app:neet_switch_isOpen="true"
+        app:neet_switch_mediaDesign="true"
+        app:neet_switch_offColor="#00F"
+        app:neet_switch_onColor="#F00"
+        app:neet_switch_shape="rect" />
 
-</RelativeLayout>
+    <com.neetoffice.library.widget.neetswitch.NeetSwitch
+        android:id="@+id/neetSwitch2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:neet_switch_buttonColor="#FF0"
+        app:neet_switch_elevation="2dip"
+        app:neet_switch_isOpen="true"
+        app:neet_switch_mediaDesign="false"
+        app:neet_switch_offColor="#00F"
+        app:neet_switch_onColor="#F00"
+        app:neet_switch_shape="rect" />
+
+    <com.neetoffice.library.widget.neetswitch.NeetSwitch
+        android:id="@+id/neetSwitch3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:neet_switch_buttonColor="#FF0"
+        app:neet_switch_elevation="2dip"
+        app:neet_switch_isOpen="true"
+        app:neet_switch_mediaDesign="true"
+        app:neet_switch_offColor="#00F"
+        app:neet_switch_onColor="#F00"
+        app:neet_switch_shape="circle" />
+
+    <com.neetoffice.library.widget.neetswitch.NeetSwitch
+        android:id="@+id/neetSwitch4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:neet_switch_buttonColor="#FF0"
+        app:neet_switch_elevation="2dip"
+        app:neet_switch_isOpen="true"
+        app:neet_switch_mediaDesign="false"
+        app:neet_switch_offColor="#00F"
+        app:neet_switch_onColor="#F00"
+        app:neet_switch_shape="circle" />
+
+</LinearLayout>
