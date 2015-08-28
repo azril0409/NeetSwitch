@@ -164,10 +164,10 @@ public class NeetSwitch extends View {
         final float r = radius - lineWidth - elevation;
         float w;
         float h = r;
-        if (mediaDesign || tr.width() < r) {
+        if (mediaDesign || (tr.width()-r) < r) {
             w = r;
         } else {
-            w = tr.width() - r;
+            w = tr.width();
         }
         final float x = pl + lineWidth + elevation + w + (axis-(w-r)*2) * open;
         final float y = height / 2f;
