@@ -3,7 +3,11 @@
     <declare-styleable name="NeetSwitch">
         <attr name="neet_switch_offColor" format="reference|color" />
         <attr name="neet_switch_onColor" format="reference|color" />
+        <attr name="neet_switch_offtext" format="reference|string" />
+        <attr name="neet_switch_ontext" format="reference|string" />
         <attr name="neet_switch_buttonColor" format="reference|color" />
+        <attr name="neet_switch_lineColor" format="reference|color" />
+        <attr name="neet_switch_lineWidth" format="dimension|reference" />
         <attr name="neet_switch_shape">
             <enum name="rect" value="1" />
             <enum name="circle" value="2" />

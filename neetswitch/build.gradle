@@ -21,7 +21,7 @@ dependencies {
 }
 
 
-def libname = 'NeetSwitch.aar'
+def libname = 'NeetSwitch103.aar'
 task clearAar(type: Delete) {
     delete '../library/'
 }

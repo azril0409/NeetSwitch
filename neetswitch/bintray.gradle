@@ -1,6 +1,6 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.0.1"
+version = "1.0.3"
 def siteUrl = 'https://github.com/azril0409/NeetSwitch'      // 项目的主页
 def gitUrl = 'https://github.com/azril0409/NeetSwitch.git'   // Git仓库的url
 group = "com.neetoffice.library.widget"                                        // Maven Group ID for the artifact，一般填你唯一的包名

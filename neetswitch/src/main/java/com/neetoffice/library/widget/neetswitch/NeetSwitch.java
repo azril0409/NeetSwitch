@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
@@ -30,13 +31,18 @@ public class NeetSwitch extends View {
     private float startX;
     private int shape = CIRCLE;
     private Paint paint;
+    private Paint textPaint;
     private float open = 1.0f;
     private boolean mediaDesign = false;
     private float radius;
-    private int onColor;
-    private int offColor;
-    private int buttonColor;
+    private int onColor = Color.parseColor("#0288ce");
+    private int offColor = Color.parseColor("#888888");
+    private int buttonColor = Color.WHITE;
+    private int lineColor = Color.TRANSPARENT;
+    private float lineWidth = 0;
     private boolean touchable = true;
+    private CharSequence offtext = "";
+    private CharSequence ontext = "";
     private OnCheckedChangeListener onCheckedChangeListener;
     private final Animator.AnimatorListener listener = new Animator.AnimatorListener() {
         @Override
@@ -85,14 +91,18 @@ public class NeetSwitch extends View {
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NeetSwitch, defStyleAttr, defStyleRes);
-            onColor = a.getColor(R.styleable.NeetSwitch_neet_switch_onColor, Color.parseColor("#0288ce"));
-            offColor = a.getColor(R.styleable.NeetSwitch_neet_switch_offColor, Color.parseColor("#888888"));
-            buttonColor = a.getColor(R.styleable.NeetSwitch_neet_switch_buttonColor, Color.WHITE);
-            shape = a.getInt(R.styleable.NeetSwitch_neet_switch_shape, CIRCLE);
+            onColor = a.getColor(R.styleable.NeetSwitch_neet_switch_onColor, onColor);
+            offColor = a.getColor(R.styleable.NeetSwitch_neet_switch_offColor, offColor);
+            offtext = a.getText(R.styleable.NeetSwitch_neet_switch_offtext);
+            ontext = a.getText(R.styleable.NeetSwitch_neet_switch_ontext);
+            buttonColor = a.getColor(R.styleable.NeetSwitch_neet_switch_buttonColor, buttonColor);
+            lineColor = a.getColor(R.styleable.NeetSwitch_neet_switch_lineColor, lineColor);
+            lineWidth = a.getDimension(R.styleable.NeetSwitch_neet_switch_lineWidth, lineWidth);
+            shape = a.getInt(R.styleable.NeetSwitch_neet_switch_shape, shape);
             touchable = a.getBoolean(R.styleable.NeetSwitch_neet_switch_touchable, touchable);
-            open = a.getBoolean(R.styleable.NeetSwitch_neet_switch_isOpen, false) ? 1.0f : 0.0f;
+            open = a.getBoolean(R.styleable.NeetSwitch_neet_switch_isOpen, open != 1.0f) ? 1.0f : 0.0f;
             mediaDesign = a.getBoolean(R.styleable.NeetSwitch_neet_switch_mediaDesign, mediaDesign);
-            elevation = a.getDimensionPixelSize(R.styleable.NeetSwitch_neet_switch_elevation, 6);
+            elevation = a.getDimensionPixelSize(R.styleable.NeetSwitch_neet_switch_elevation, (int) elevation);
         }
         paint = new Paint();
         paint.setStrokeWidth(0);
@@ -101,6 +111,8 @@ public class NeetSwitch extends View {
         } else {
             elevation = 6;
         }
+        textPaint = new Paint();
+        textPaint.setColor(Color.BLACK);
     }
 
     @Override
@@ -124,6 +136,8 @@ public class NeetSwitch extends View {
     public void draw(Canvas canvas) {
         final float width = getMeasuredWidth();
         final float height = getMeasuredHeight();
+        final float pt = getPaddingTop();
+        final float pb = getPaddingBottom();
         final float pl = getPaddingLeft();
         final float pr = getPaddingRight();
         final int alpha = (int) (Color.alpha(offColor) + open * (Color.alpha(onColor) - Color.alpha(offColor)));
@@ -133,43 +147,72 @@ public class NeetSwitch extends View {
         final int barColor = Color.argb(alpha, red, green, blue);
         paint.setColor(barColor);
         final float axis = getAxis();
-        if (shape == RECT) {
-            if (mediaDesign) {
-                RectF rectF = new RectF(pl + radius, height / 2f - radius / 2f, pl + radius + axis, height / 2f + radius / 2f);
-                canvas.drawRect(rectF, paint);
+        Rect tr = new Rect();
+        if (offtext != null && open > 0.5) {
+            textPaint.getTextBounds(offtext.toString(), 0, offtext.length(), tr);
+        } else if (ontext != null) {
+            textPaint.getTextBounds(ontext.toString(), 0, ontext.length(), tr);
+        }
+        if (mediaDesign) {
+            RectF rectF = new RectF(pl + radius, height / 2f - radius / 2f, pl + radius + axis, height / 2f + radius / 2f);
+            drewbar(canvas, rectF, shape == RECT ? 0 : radius / 2f, barColor);
+        } else {
+            RectF rectF = new RectF(pl, height / 2f - radius, width - pr, height / 2f + radius);
+            drewbar(canvas, rectF, shape == RECT ? 0 : radius, barColor);
+        }
+
+        final float r = radius - lineWidth - elevation;
+        float w;
+        float h = r;
+        if (mediaDesign || tr.width() < r) {
+            w = r;
+        } else {
+            w = tr.width() - r;
+        }
+        final float x = pl + lineWidth + elevation + w + (axis-(w-r)*2) * open;
+        final float y = height / 2f;
+        if (mediaDesign) {
+            if (shape == CIRCLE) {
+                final RadialGradient radialGradient = new RadialGradient(x + elevation, y + elevation, r + elevation * 2, new int[]{Color.GRAY, Color.TRANSPARENT}, new float[]{0, 1}, Shader.TileMode.REPEAT);
+                paint.setShader(radialGradient);
+                canvas.drawCircle(x + elevation, y + elevation, r, paint);
             } else {
-                RectF rectF = new RectF(pl, height / 2f - radius, width - pr, height / 2f + radius);
-                canvas.drawRect(rectF, paint);
-            }
-            final float x = pl + radius + axis * open;
-            final float y = height / 2f;
-            if (mediaDesign) {
-                RectF rectF = new RectF(x - radius + 3*elevation, y - radius + 3*elevation, x + radius - elevation, y + radius - elevation);
+                RectF rectF = new RectF(x - r + elevation, y - r + elevation, x + r + elevation, y + r + elevation);
                 paint.setColor(Color.GRAY);
                 paint.setAlpha(100);
                 canvas.drawRect(rectF, paint);
                 paint.setAlpha(255);
             }
-            paint.setShader(null);
-            paint.setColor(buttonColor);
-            RectF rectF = new RectF(x - radius + elevation * (mediaDesign ? 2 : 1), y - radius + elevation * (mediaDesign ? 2 : 1), x + radius - elevation * (mediaDesign ? 2 : 1), y + radius - elevation * (mediaDesign ? 2 : 1));
-            canvas.drawRect(rectF, paint);
+        }
+        paint.setShader(null);
+        paint.setColor(buttonColor);
+        RectF rectF = new RectF(x - w, y - h, x + w, y + h);
+        canvas.drawRoundRect(rectF, shape == RECT ? 0 : radius, shape == RECT ? 0 : radius, paint);
+
+        if (!mediaDesign && offtext != null && open > 0.5) {
+            canvas.drawText(offtext.toString(), x - tr.width() / 2, y, textPaint);
+        } else if (!mediaDesign && ontext != null) {
+            canvas.drawText(ontext.toString(), x - tr.width() / 2, y, textPaint);
+        }
+    }
+
+    private void drewbar(Canvas canvas, RectF bar, float radius, int barColor) {
+        bar = new RectF(bar.left + lineWidth, bar.top + lineWidth, bar.right - lineWidth, bar.bottom - lineWidth);
+        paint.setColor(lineColor);
+        paint.setStrokeWidth(lineWidth);
+        paint.setStyle(Paint.Style.STROKE);
+        if (radius > 0) {
+            canvas.drawRoundRect(bar, radius, radius, paint);
         } else {
-            if (mediaDesign) {
-                RectF rectF = new RectF(pl + radius, height / 2f - radius / 2f, pl + radius + axis, height / 2f + radius / 2f);
-                canvas.drawRoundRect(rectF, radius / 2f, radius / 2f, paint);
-            } else {
-                RectF rectF = new RectF(pl, height / 2f - radius, width - pr, height / 2f + radius);
-                canvas.drawRoundRect(rectF, radius, radius, paint);
-            }
-            if (mediaDesign) {
-                final RadialGradient radialGradient = new RadialGradient(pl + radius + axis * open, height / 2f + elevation, radius, new int[]{Color.GRAY, Color.TRANSPARENT}, new float[]{0, 1}, Shader.TileMode.REPEAT);
-                paint.setShader(radialGradient);
-                canvas.drawCircle(pl + radius + axis * open + elevation, height / 2f + elevation, radius - elevation, paint);
-            }
-            paint.setShader(null);
-            paint.setColor(buttonColor);
-            canvas.drawCircle(pl + radius + axis * open, height / 2f, radius - elevation * (mediaDesign ? 2 : 1), paint);
+            canvas.drawRect(bar, paint);
+        }
+        paint.setStrokeWidth(0);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(barColor);
+        if (radius > 0) {
+            canvas.drawRoundRect(bar, radius, radius, paint);
+        } else {
+            canvas.drawRect(bar, paint);
         }
     }
 
@@ -190,9 +233,13 @@ public class NeetSwitch extends View {
         this.onCheckedChangeListener = onCheckedChangeListener;
     }
 
+    public void setChecked(boolean checked) {
+        runAnimator(open, checked ? 1.0f : 0.0f);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!touchable&&l != null) {
+        if (!touchable && l != null) {
             return super.onTouchEvent(event);
         }
         final float height = getMeasuredHeight();

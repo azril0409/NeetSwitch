@@ -18,6 +18,8 @@
         app:neet_switch_buttonColor="#FF0"
         app:neet_switch_elevation="2dip"
         app:neet_switch_isOpen="true"
+        app:neet_switch_lineColor="#000"
+        app:neet_switch_lineWidth="4dip"
         app:neet_switch_mediaDesign="true"
         app:neet_switch_offColor="#00F"
         app:neet_switch_onColor="#F00"
@@ -31,6 +33,8 @@
         app:neet_switch_buttonColor="#FF0"
         app:neet_switch_elevation="2dip"
         app:neet_switch_isOpen="true"
+        app:neet_switch_lineColor="#000"
+        app:neet_switch_lineWidth="4dip"
         app:neet_switch_mediaDesign="false"
         app:neet_switch_offColor="#00F"
         app:neet_switch_onColor="#F00"
@@ -42,11 +46,13 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:neet_switch_buttonColor="#FF0"
-        app:neet_switch_elevation="2dip"
+        app:neet_switch_elevation="4dip"
         app:neet_switch_isOpen="true"
-        app:neet_switch_mediaDesign="true"
-        app:neet_switch_offColor="#00F"
-        app:neet_switch_onColor="#F00"
+        app:neet_switch_lineColor="#000"
+        app:neet_switch_lineWidth="2dip"
+        app:neet_switch_mediaDesign="false"
+        app:neet_switch_offColor="#000F"
+        app:neet_switch_onColor="#0F00"
         app:neet_switch_shape="circle" />
 
     <com.neetoffice.library.widget.neetswitch.NeetSwitch
@@ -55,11 +61,13 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:neet_switch_buttonColor="#FF0"
-        app:neet_switch_elevation="2dip"
-        app:neet_switch_isOpen="true"
+        app:neet_switch_elevation="4dip"
+        app:neet_switch_isOpen="false"
+        app:neet_switch_lineColor="#000"
+        app:neet_switch_lineWidth="2dip"
         app:neet_switch_mediaDesign="false"
-        app:neet_switch_offColor="#00F"
-        app:neet_switch_onColor="#F00"
+        app:neet_switch_offColor="#000F"
+        app:neet_switch_onColor="#0F00"
         app:neet_switch_shape="circle" />
 
 </LinearLayout>
