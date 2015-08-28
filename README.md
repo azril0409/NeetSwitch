@@ -6,7 +6,7 @@ API 11+
 gradle:
 ```
 <dependency>
-    compile 'com.neetoffice.library.widget:neetswitch:1.0.4@aar'
+    compile 'com.neetoffice.library.widget:neetswitch:1.0.5@aar'
 </dependency>
 ```
 
