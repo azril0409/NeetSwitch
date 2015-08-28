@@ -43,6 +43,8 @@ public class NeetSwitch extends View {
     private boolean touchable = true;
     private CharSequence offtext = "";
     private CharSequence ontext = "";
+    private int textSize = 15;
+    private int textColor = Color.BLACK;
     private OnCheckedChangeListener onCheckedChangeListener;
     private final Animator.AnimatorListener listener = new Animator.AnimatorListener() {
         @Override
@@ -95,6 +97,8 @@ public class NeetSwitch extends View {
             offColor = a.getColor(R.styleable.NeetSwitch_neet_switch_offColor, offColor);
             offtext = a.getText(R.styleable.NeetSwitch_neet_switch_offtext);
             ontext = a.getText(R.styleable.NeetSwitch_neet_switch_ontext);
+            textSize = a.getDimensionPixelSize(R.styleable.NeetSwitch_neet_switch_textsize, textSize);
+            textColor = a.getColor(R.styleable.NeetSwitch_neet_switch_textcolor,textColor);
             buttonColor = a.getColor(R.styleable.NeetSwitch_neet_switch_buttonColor, buttonColor);
             lineColor = a.getColor(R.styleable.NeetSwitch_neet_switch_lineColor, lineColor);
             lineWidth = a.getDimension(R.styleable.NeetSwitch_neet_switch_lineWidth, lineWidth);
@@ -112,7 +116,8 @@ public class NeetSwitch extends View {
             elevation = 6;
         }
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(textColor);
+        textPaint.setTextSize(textSize);
     }
 
     @Override
@@ -190,9 +195,9 @@ public class NeetSwitch extends View {
         canvas.drawRoundRect(rectF, shape == RECT ? 0 : radius, shape == RECT ? 0 : radius, paint);
 
         if (!mediaDesign && offtext != null && open > 0.5) {
-            canvas.drawText(offtext.toString(), x - tr.width() / 2, y, textPaint);
+            canvas.drawText(offtext.toString(), x - tr.width() / 2, y+textSize/4, textPaint);
         } else if (!mediaDesign && ontext != null) {
-            canvas.drawText(ontext.toString(), x - tr.width() / 2, y, textPaint);
+            canvas.drawText(ontext.toString(), x - tr.width() / 2, y+textSize/4, textPaint);
         }
     }
 
