@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NeetSwitch neetSwitch4 = (NeetSwitch) findViewById(R.id.neetSwitch4);
         neetSwitch1.setOnCheckedChangeListener(this);
         neetSwitch2.setOnCheckedChangeListener(this);
-        neetSwitch3.setOnCheckedChangeListener(this);
-        neetSwitch4.setOnCheckedChangeListener(this);
+        neetSwitch3.setOnClickListener(this);
+        neetSwitch4.setOnClickListener(this);
     }
 
     @Override

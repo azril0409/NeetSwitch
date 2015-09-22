@@ -15,6 +15,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -98,7 +99,7 @@ public class NeetSwitch extends View {
             offtext = a.getText(R.styleable.NeetSwitch_neet_switch_offtext);
             ontext = a.getText(R.styleable.NeetSwitch_neet_switch_ontext);
             textSize = a.getDimensionPixelSize(R.styleable.NeetSwitch_neet_switch_textsize, textSize);
-            textColor = a.getColor(R.styleable.NeetSwitch_neet_switch_textcolor,textColor);
+            textColor = a.getColor(R.styleable.NeetSwitch_neet_switch_textcolor, textColor);
             buttonColor = a.getColor(R.styleable.NeetSwitch_neet_switch_buttonColor, buttonColor);
             lineColor = a.getColor(R.styleable.NeetSwitch_neet_switch_lineColor, lineColor);
             lineWidth = a.getDimension(R.styleable.NeetSwitch_neet_switch_lineWidth, lineWidth);
@@ -169,12 +170,12 @@ public class NeetSwitch extends View {
         final float r = radius - lineWidth - elevation;
         float w;
         float h = r;
-        if (mediaDesign || (tr.width()-r) < r) {
+        if (mediaDesign || (tr.width() - r) < r) {
             w = r;
         } else {
             w = tr.width();
         }
-        final float x = pl + lineWidth + elevation + w + (axis-(w-r)*2) * open;
+        final float x = pl + lineWidth + elevation + w + (axis - (w - r) * 2) * open;
         final float y = height / 2f;
         if (mediaDesign) {
             if (shape == CIRCLE) {
@@ -195,9 +196,9 @@ public class NeetSwitch extends View {
         canvas.drawRoundRect(rectF, shape == RECT ? 0 : radius, shape == RECT ? 0 : radius, paint);
 
         if (!mediaDesign && offtext != null && open > 0.5) {
-            canvas.drawText(offtext.toString(), x - tr.width() / 2, y+textSize/4, textPaint);
+            canvas.drawText(offtext.toString(), x - tr.width() / 2, y + textSize / 4, textPaint);
         } else if (!mediaDesign && ontext != null) {
-            canvas.drawText(ontext.toString(), x - tr.width() / 2, y+textSize/4, textPaint);
+            canvas.drawText(ontext.toString(), x - tr.width() / 2, y + textSize / 4, textPaint);
         }
     }
 
@@ -244,7 +245,7 @@ public class NeetSwitch extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!touchable && l != null) {
+        if (!touchable || l != null) {
             return super.onTouchEvent(event);
         }
         final float height = getMeasuredHeight();

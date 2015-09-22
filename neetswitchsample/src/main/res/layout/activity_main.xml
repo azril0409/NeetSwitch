@@ -50,9 +50,10 @@
         app:neet_switch_isOpen="true"
         app:neet_switch_lineColor="#000"
         app:neet_switch_lineWidth="2dip"
-        app:neet_switch_mediaDesign="false"
+        app:neet_switch_mediaDesign="true"
         app:neet_switch_offColor="#000F"
         app:neet_switch_onColor="#0F00"
+        app:neet_switch_touchable="false"
         app:neet_switch_shape="circle" />
 
     <com.neetoffice.library.widget.neetswitch.NeetSwitch
@@ -68,6 +69,7 @@
         app:neet_switch_mediaDesign="false"
         app:neet_switch_offColor="#000F"
         app:neet_switch_onColor="#0F00"
+        app:neet_switch_touchable="false"
         app:neet_switch_shape="circle" />
 
 </LinearLayout>
