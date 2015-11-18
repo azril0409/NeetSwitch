@@ -121,31 +121,32 @@ public class NeetSwitch extends View {
         textPaint.setTextSize(textSize);
     }
 
+    protected int measureDimension(int defaultSize, int measureSpec) {
+        int result = defaultSize;
+        final int specMode = MeasureSpec.getMode(measureSpec);
+        final int specSize = MeasureSpec.getSize(measureSpec);
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else if (specMode == MeasureSpec.AT_MOST) {
+            result = Math.min(defaultSize, specSize);
+        }
+        return result;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        final int width = MeasureSpec.getSize(widthMeasureSpec);
-        float height = MeasureSpec.getSize(heightMeasureSpec);
-        radius = width / 6f < height / 2f ? width / 6f : height / 2f;
-        final float pt = getPaddingTop();
-        final float pb = getPaddingBottom();
-        final float pl = getPaddingLeft();
-        final float pr = getPaddingRight();
-        if (height < radius + pt + pb) {
-            height = radius + pt + pb;
-        }
-        startX = width - pr - radius;
-        setMeasuredDimension(width, (int) height);
+        final int  width = measureDimension(120, widthMeasureSpec);
+        final int  height = measureDimension(60, heightMeasureSpec);
+        radius = width / 4f < height / 2f ? width / 4f : height / 2f;
+        startX = width - radius;
+        setMeasuredDimension(width, height);
     }
 
     @Override
     public void draw(Canvas canvas) {
         final float width = getMeasuredWidth();
         final float height = getMeasuredHeight();
-        final float pt = getPaddingTop();
-        final float pb = getPaddingBottom();
-        final float pl = getPaddingLeft();
-        final float pr = getPaddingRight();
         final int alpha = (int) (Color.alpha(offColor) + open * (Color.alpha(onColor) - Color.alpha(offColor)));
         final int red = (int) (Color.red(offColor) + open * (Color.red(onColor) - Color.red(offColor)));
         final int green = (int) (Color.green(offColor) + open * (Color.green(onColor) - Color.green(offColor)));
@@ -160,10 +161,10 @@ public class NeetSwitch extends View {
             textPaint.getTextBounds(ontext.toString(), 0, ontext.length(), tr);
         }
         if (mediaDesign) {
-            RectF rectF = new RectF(pl + radius, height / 2f - radius / 2f, pl + radius + axis, height / 2f + radius / 2f);
+            RectF rectF = new RectF(radius, height / 2f - radius / 2f, radius + axis, height / 2f + radius / 2f);
             drewbar(canvas, rectF, shape == RECT ? 0 : radius / 2f, barColor);
         } else {
-            RectF rectF = new RectF(pl, height / 2f - radius, width - pr, height / 2f + radius);
+            RectF rectF = new RectF(0, height / 2f - radius, width, height / 2f + radius);
             drewbar(canvas, rectF, shape == RECT ? 0 : radius, barColor);
         }
 
@@ -175,7 +176,7 @@ public class NeetSwitch extends View {
         } else {
             w = tr.width();
         }
-        final float x = pl + lineWidth + elevation + w + (axis - (w - r) * 2) * open;
+        final float x = lineWidth + elevation + w + (axis - (w - r) * 2) * open;
         final float y = height / 2f;
         if (mediaDesign) {
             if (shape == CIRCLE) {
