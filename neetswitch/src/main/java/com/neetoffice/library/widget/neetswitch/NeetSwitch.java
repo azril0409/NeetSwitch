@@ -3,6 +3,7 @@ package com.neetoffice.library.widget.neetswitch;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,12 +16,11 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Created by Deo-chainmeans on 2015/8/17.
+ * Created by Deo on 2015/8/17.
  */
 public class NeetSwitch extends View {
     private static final long DURATION = 500;
@@ -91,6 +91,7 @@ public class NeetSwitch extends View {
         init(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    @SuppressLint("NewApi")
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NeetSwitch, defStyleAttr, defStyleRes);
@@ -113,8 +114,6 @@ public class NeetSwitch extends View {
         paint.setStrokeWidth(0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             elevation = getElevation() > 0 ? getElevation() : elevation;
-        } else {
-            elevation = 6;
         }
         textPaint = new Paint();
         textPaint.setColor(textColor);
@@ -136,8 +135,8 @@ public class NeetSwitch extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        final int  width = measureDimension(120, widthMeasureSpec);
-        final int  height = measureDimension(60, heightMeasureSpec);
+        final int width = measureDimension(120, widthMeasureSpec);
+        final int height = measureDimension(60, heightMeasureSpec);
         radius = width / 4f < height / 2f ? width / 4f : height / 2f;
         startX = width - radius;
         setMeasuredDimension(width, height);
@@ -161,10 +160,18 @@ public class NeetSwitch extends View {
             textPaint.getTextBounds(ontext.toString(), 0, ontext.length(), tr);
         }
         if (mediaDesign) {
-            RectF rectF = new RectF(radius, height / 2f - radius / 2f, radius + axis, height / 2f + radius / 2f);
+            final float left = radius;
+            final float top = height / 2f - radius / 2f;
+            final float right = radius + axis;
+            final float bottom = height / 2f + radius / 2f;
+            RectF rectF = new RectF(left, top, right, bottom);
             drewbar(canvas, rectF, shape == RECT ? 0 : radius / 2f, barColor);
         } else {
-            RectF rectF = new RectF(0, height / 2f - radius, width, height / 2f + radius);
+            final float left = 0;
+            final float top = height / 2f - radius;
+            final float right = width;
+            final float bottom = height / 2f + radius;
+            RectF rectF = new RectF(left, top, right, bottom);
             drewbar(canvas, rectF, shape == RECT ? 0 : radius, barColor);
         }
 
@@ -180,7 +187,9 @@ public class NeetSwitch extends View {
         final float y = height / 2f;
         if (mediaDesign) {
             if (shape == CIRCLE) {
-                final RadialGradient radialGradient = new RadialGradient(x + elevation, y + elevation, r + elevation * 2, new int[]{Color.GRAY, Color.TRANSPARENT}, new float[]{0, 1}, Shader.TileMode.REPEAT);
+                final RadialGradient radialGradient = new RadialGradient(x + elevation, y + elevation,
+                        r + elevation * 2, new int[] { Color.GRAY, Color.TRANSPARENT }, new float[] { 0, 1 },
+                        Shader.TileMode.REPEAT);
                 paint.setShader(radialGradient);
                 canvas.drawCircle(x + elevation, y + elevation, r, paint);
             } else {
@@ -241,7 +250,11 @@ public class NeetSwitch extends View {
     }
 
     public void setChecked(boolean checked) {
-        runAnimator(open, checked ? 1.0f : 0.0f);
+        runAnimator(open, checked ? 1.0f : 0.0f, DURATION);
+    }
+
+    public void setChecked(boolean checked, long duration) {
+        runAnimator(open, checked ? 1.0f : 0.0f, duration);
     }
 
     @Override
@@ -276,7 +289,7 @@ public class NeetSwitch extends View {
             invalidate();
             return true;
         } else if (MotionEvent.ACTION_UP == event.getAction()) {
-            runAnimator(open, open > 0.5f ? 1f : 0f);
+            runAnimator(open, open > 0.5f ? 1f : 0f, DURATION);
         }
         return super.onTouchEvent(event);
     }
@@ -287,15 +300,27 @@ public class NeetSwitch extends View {
     }
 
     public void toggle() {
-        runAnimator(open, open > 0 ? 0f : 1f);
+        runAnimator(open, open > 0 ? 0f : 1f, DURATION);
     }
 
-    private void runAnimator(float from, float to) {
-        ObjectAnimator a = ObjectAnimator.ofFloat(this, "open", from, to).setDuration((long) (DURATION * Math.abs(to - from)));
-        AnimatorSet set = new AnimatorSet();
-        set.addListener(listener);
-        set.play(a);
-        set.start();
+    public void toggle(long duration) {
+        runAnimator(open, open > 0 ? 0f : 1f, duration);
+    }
+
+    private void runAnimator(float from, float to, long duration) {
+        if (duration > 0) {
+            ObjectAnimator a = ObjectAnimator.ofFloat(this, "open", from, to)
+                    .setDuration((long) (duration * Math.abs(to - from)));
+            AnimatorSet set = new AnimatorSet();
+            set.addListener(listener);
+            set.play(a);
+            set.start();
+        } else {
+            setOpen(to);
+            if (onCheckedChangeListener != null) {
+                onCheckedChangeListener.onCheckedChanged(NeetSwitch.this, open > 0);
+            }
+        }
     }
 
     public static interface OnCheckedChangeListener {
